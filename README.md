@@ -59,7 +59,7 @@ python3 -m venv .venv
 .venv/bin/python -m uvicorn demo.app:app --host 127.0.0.1 --port 8000
 ```
 
-打开 **http://localhost:8000/**，自动进入模板地球。示例账号 `demo`，密码 `demo2026`，登录页自动填入。也可执行 `bash start.sh`。
+打开 [http://localhost:8000/](http://localhost:8000/)，自动进入模板地球。示例账号 `demo`，密码 `demo2026`，登录页自动填入。也可执行 `bash start.sh`。
 
 - 模板含 7 段虚构回忆、7 张程序生成的色块图片和 2 个示例账号；数字仅描述 Demo 数据。
 - 示例地球在每次服务启动时重建。所有访客共享同一份演示数据，写入内容可能被其他访客看到，重启后清空。
