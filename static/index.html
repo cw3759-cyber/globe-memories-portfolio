@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>我们的地球</title>
+    <link rel="stylesheet" href="__GM_ROOT__/static/style.css?v=20260819-demo2" />
+    <script>window.GM_ROOT = "__GM_ROOT__";</script>
+  </head>
+  <body>
+    <div id="globe"></div>
+    <div class="demo-banner" id="demo-banner" hidden>案例演示 · 虚构故事，不是真实用户数据</div>
+
+    <div class="loading" id="loading">正在点亮这颗星球…</div>
+
+    <div class="topbar">
+      <div class="brand glass">
+        <i class="dot"></i>
+        <div>
+          <strong>我们的地球</strong><br />
+          <span id="brand-sub">一起收藏去过的地方</span>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="members glass" id="members"></div>
+      <button class="icon-btn glass" id="btn-invite" title="邀请另一个人">✉︎</button>
+      <button class="icon-btn glass" id="btn-chat" title="留言">
+        💬<span class="badge" id="unread" hidden>0</span>
+      </button>
+      <button class="icon-btn glass" id="btn-logout" title="退出">⏻</button>
+    </div>
+
+    <div class="zoom-bar">
+      <button class="icon-btn glass" id="zoom-in" title="放大，看到城市和街道">＋</button>
+      <button class="icon-btn glass" id="zoom-out" title="缩小，看到国家和省">－</button>
+      <div class="zoom-level glass" id="zoom-level">国家</div>
+    </div>
+
+    <aside class="timeline glass">
+      <header>
+        <h2>回忆时间线</h2>
+      </header>
+      <div class="list" id="place-list"></div>
+    </aside>
+
+    <!-- 地点详情 -->
+    <section class="drawer glass" id="drawer-detail">
+      <header>
+        <h2 id="d-title">标题</h2>
+        <button class="btn ghost" id="d-close" style="padding: 6px 10px">✕</button>
+      </header>
+      <div class="body">
+        <div class="detail-meta" id="d-meta"></div>
+        <p class="detail-desc" id="d-desc"></p>
+        <div class="photo-grid" id="d-photos"></div>
+        <div style="display: flex; gap: 8px; margin-top: 18px">
+          <button class="btn" id="d-comment" style="flex: 1">💬 就这里留言</button>
+          <button class="btn danger" id="d-delete">删除</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 留言板 -->
+    <section class="drawer glass" id="drawer-chat">
+      <header>
+        <h2>留言板</h2>
+        <button class="btn ghost" id="c-close" style="padding: 6px 10px">✕</button>
+      </header>
+      <div class="body chat-list" id="chat-list"></div>
+      <div class="chat-ref-hint" id="chat-ref">
+        <span id="chat-ref-text"></span>
+        <button class="btn ghost" id="chat-ref-clear" style="padding: 2px 8px; font-size: 12px">取消</button>
+      </div>
+      <div class="chat-input">
+        <textarea id="chat-text" rows="1" placeholder="写点什么…（⌘/Ctrl + Enter 发送）"></textarea>
+        <button class="btn primary" id="chat-send">发送</button>
+      </div>
+    </section>
+
+    <!-- 添加/编辑地点 -->
+    <div class="modal-mask" id="modal-place">
+      <div class="modal glass">
+        <h2 id="m-title">添加一个地方</h2>
+        <p class="hint" id="m-coord"></p>
+
+        <label class="field">
+          <span>标题</span>
+          <input class="input" id="f-title" placeholder="比如：第一次一起看海" maxlength="60" />
+        </label>
+
+        <div class="row2">
+          <label class="field">
+            <span>日期</span>
+            <input class="input" id="f-date" type="date" />
+          </label>
+          <label class="field">
+            <span>地点（可搜到街道、商场、店名）</span>
+            <input class="input" id="f-loc" placeholder="搜国家、省、市、街道或店名" autocomplete="off" />
+          </label>
+        </div>
+        <div class="suggest" id="f-suggest" hidden></div>
+
+        <label class="field">
+          <span>想说的话</span>
+          <textarea class="input" id="f-desc" placeholder="那天发生了什么…"></textarea>
+        </label>
+
+        <label class="field">
+          <span>照片</span>
+          <div class="drop" id="f-drop">点击选择照片，或把照片拖到这里</div>
+          <input type="file" id="f-files" accept="image/*" multiple hidden />
+          <div class="preview" id="f-preview"></div>
+        </label>
+
+        <p class="error" id="f-err"></p>
+        <div class="modal-actions">
+          <button class="btn ghost" id="f-cancel">取消</button>
+          <button class="btn primary" id="f-save">保存到地球</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 邀请 -->
+    <div class="modal-mask" id="modal-invite">
+      <div class="modal glass">
+        <h2>把这颗地球送给谁</h2>
+        <p class="hint">生成一个邀请码发给对方，Ta 就能加入，一起往地球上添加回忆和留言。</p>
+        <div
+          id="invite-code"
+          style="
+            font-size: 30px;
+            letter-spacing: 0.16em;
+            text-align: center;
+            padding: 22px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.06);
+            font-weight: 700;
+          "
+        >
+          ————
+        </div>
+        <div id="invite-list" style="margin-top: 16px; font-size: 13px; color: var(--muted)"></div>
+        <div class="modal-actions">
+          <button class="btn ghost" id="i-close">关闭</button>
+          <button class="btn" id="i-copy">复制</button>
+          <button class="btn primary" id="i-new">生成新邀请码</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+      <button class="close" id="lb-close">✕</button>
+      <button class="nav prev" id="lb-prev">‹</button>
+      <img id="lb-img" alt="" />
+      <button class="nav next" id="lb-next">›</button>
+    </div>
+
+    <div class="modal-mask" id="modal-cluster">
+      <div class="modal glass">
+        <h2 id="cluster-title">这里的回忆</h2>
+        <p class="hint" id="cluster-hint">这个地点有好几段回忆，选一段看看。</p>
+        <div class="cluster-list" id="cluster-list"></div>
+        <div class="modal-actions">
+          <button class="btn ghost" id="cluster-close">关闭</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="memory-bloom" hidden></div>
+    <button class="add-place-btn" id="btn-add">＋ 增加地点</button>
+    <div class="hover-name" id="hover-name" hidden></div>
+    <div class="toast" id="toast"></div>
+
+    <script src="__GM_ROOT__/static/vendor/globe.gl.min.js"></script>
+    <script src="__GM_ROOT__/static/app.js?v=20260819-demo2"></script>
+  </body>
+</html>

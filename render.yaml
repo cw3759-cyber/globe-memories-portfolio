@@ -1,0 +1,6 @@
+# Separate template service. Select plan/region in the provider UI.
+services:
+  - type: web
+    name: globe-memories-portfolio
+    runtime: docker
+    healthCheckPath: /demo/health

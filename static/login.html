@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>我们的地球</title>
+    <link rel="stylesheet" href="__GM_ROOT__/static/style.css?v=20260819-demo2" />
+    <script>window.GM_ROOT = "__GM_ROOT__";</script>
+  </head>
+  <body>
+    <div class="auth-wrap">
+      <div class="auth-card glass">
+        <div class="auth-globe"></div>
+        <h1 id="title">我们的地球</h1>
+        <p class="sub" id="subtitle">把去过的地方、拍过的照片和想说的话，都放在这颗星球上。</p>
+
+        <div class="tabs" id="tabs">
+          <button type="button" data-tab="login" class="on">登录</button>
+          <button type="button" data-tab="register">加入</button>
+        </div>
+
+        <form id="form-login" method="post" action="__GM_ROOT__/api/auth/login">
+          <label class="field">
+            <span>用户名</span>
+            <input class="input" name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required />
+          </label>
+          <label class="field">
+            <span>密码</span>
+            <input class="input" name="password" type="password" autocomplete="current-password" required />
+          </label>
+          <p class="error" id="err-login"></p>
+          <button class="btn primary" style="width: 100%" type="submit">进入地球</button>
+        </form>
+
+        <form id="form-register" method="post" action="__GM_ROOT__/api/auth/register" hidden>
+          <label class="field" id="invite-field">
+            <span>邀请码</span>
+            <input class="input" name="invite_code" placeholder="ABCD-2345" autocapitalize="characters" />
+          </label>
+          <label class="field">
+            <span>昵称（会显示在地球上）</span>
+            <input class="input" name="display_name" required maxlength="20" />
+          </label>
+          <label class="field">
+            <span>用户名（登录用）</span>
+            <input class="input" name="username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required />
+          </label>
+          <label class="field">
+            <span>密码</span>
+            <input class="input" name="password" type="password" autocomplete="new-password" required />
+          </label>
+          <p class="error" id="err-register"></p>
+          <button class="btn primary" style="width: 100%" type="submit">创建账号</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const $ = (s) => document.querySelector(s);
+      const forms = { login: $("#form-login"), register: $("#form-register") };
+      const params = new URLSearchParams(location.search);
+      const err = params.get("err");
+      const tab = params.get("tab") || "login";
+
+      function switchTab(name) {
+        for (const [key, form] of Object.entries(forms)) form.hidden = key !== name;
+        document
+          .querySelectorAll("#tabs button")
+          .forEach((b) => b.classList.toggle("on", b.dataset.tab === name));
+      }
+
+      if (tab === "register") switchTab("register");
+      if (err) {
+        const box = tab === "register" ? $("#err-register") : $("#err-login");
+        box.textContent = err;
+      }
+
+      const ROOT = window.GM_ROOT || "";
+      fetch(ROOT + "/api/auth/status")
+        .then((r) => r.json())
+        .then((s) => {
+          if (s.demo && s.demo_login) {
+            $("#title").textContent = "案例地球";
+            $("#subtitle").textContent =
+              "演示账号 " + s.demo_login.username + " / " + s.demo_login.password + "（虚构情侣故事）";
+            const user = document.querySelector("#form-login [name=username]");
+            const pass = document.querySelector("#form-login [name=password]");
+            if (user) user.value = s.demo_login.username;
+            if (pass) pass.value = s.demo_login.password;
+            $("#tabs").hidden = true;
+            return;
+          }
+          if (!s.has_owner) {
+            $("#invite-field").hidden = true;
+            $("#subtitle").textContent = s.backup_configured
+              ? "还没有人在这颗星球上留下痕迹，创建第一个账号，它就属于你了。"
+              : "线上还没接上备份仓库，每次更新都可能丢掉账号。先在 Render 填好 BACKUP_GITHUB_TOKEN 和 BACKUP_GITHUB_REPO。";
+            if (!params.get("tab")) switchTab("register");
+          } else if (s.member_count > 1) {
+            $("#subtitle").textContent = "用自己的用户名登录，不要填对方的。";
+          } else if (s.owner_username) {
+            $("#subtitle").textContent =
+              "第一个账号用户名是 " + s.owner_username + "（昵称：" + (s.owner_name || "") + "）。对方请点「加入」并填写这颗星球上生成的邀请码。";
+          }
+        });
+
+      $("#tabs").addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (btn) switchTab(btn.dataset.tab);
+      });
+    </script>
+  </body>
+</html>

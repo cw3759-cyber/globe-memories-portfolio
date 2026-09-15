@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+
+# 运行时数据：数据库、照片、密钥。用 backup.sh / backup-github.sh 单独备份
+data/
+data-demo/
+data.before-restore-*/
+
+# 下载来的可执行文件，不进仓库
+bin/
+
+.env
+.env.*
+*.log

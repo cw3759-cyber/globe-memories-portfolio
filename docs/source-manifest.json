@@ -1,0 +1,24 @@
+{
+  "source_commit": "7607fbf",
+  "unchanged_core_sha256": {
+    "app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "app/auth.py": "917024c8986823c3360452eb1d18664a7a5dc295dbdb79c4f1a93df9b5fdcb74",
+    "app/cloudbackup.py": "a4fe9257a35d00dc284299e5548770cfd8fadf30b162e45f16375a8eac757701",
+    "app/db.py": "d076684527cd67f5165568749c01b22088786d77d63a3e39493480cdad59ffdf",
+    "app/demoseed.py": "ea6056009724d5348132a21d45e3cd93fab4d2e362d15c7defe679764b6a06c0",
+    "app/globe_ctx.py": "d781f59d353dc1f7cbc2cff5766686faa240512ad7a5256d712adc5271400390",
+    "app/main.py": "c006d729b4fd3a21785b798f385be48a7cf3644e9e1fda7447c1aa711d7d9f7b",
+    "app/media.py": "50948adf4c9185f54664213266dc9e4cd63c6606b8c348153a82c24753288208",
+    "static/app.js": "595952727263cfbaddad1f7fe03a7a48d2f402e069e971816e74bfec5e45cd3e",
+    "static/geo/countries.geojson": "af84e270fbee1cf1d2b97b4c5fc10ad0857535e0c8fb0a268ac09c5c0fc34630",
+    "static/geo/labels.json": "4e78d33347a8bf6954ecdbbba3815d7eaf4b938b9fd4e03bebdfad16f85df20f",
+    "static/img/earth-blue-marble.jpg": "228deba2e4b600146bdcb6cfa359b8ead6aacc2b1c13550a29cd82824cfa1c01",
+    "static/img/earth-night.jpg": "355ab23dd1323315b393d7b91dd2d7ee223a1cbaaba2b48dc72ba90d371ced24",
+    "static/img/earth-topology.png": "839b12da2e4dd346b256cebae72e10c479a102c8980a22084c41275e4b9a0e12",
+    "static/img/night-sky.png": "7e1d5e780301e3a33bd79fd3ac414f7a742465f33ae4605abca743d43a3ab983",
+    "static/index.html": "759bf259648f58ec817465f75d5c537b116c54c5ea873b213e85c7d745b25b32",
+    "static/login.html": "c943f633e872e3eb5d4bafddd9490ebacd6203f99ee66346320001ecefa66841",
+    "static/style.css": "9abe979b4d3497cb5533eaf7fee4313eba0897666735806320e6621d7490feed",
+    "static/vendor/globe.gl.min.js": "2ab6767f47e2be0ac346cd7a5eb55d259ea3da06d479dc22f1820ddd698f496a"
+  }
+}
